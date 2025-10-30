@@ -396,8 +396,11 @@
             border-radius: 50px;
             height: 40px;
             overflow: hidden;
-            border: 2px solid rgba(247, 147, 26, 0.3);
-            margin: 20px 0;
+            border: 2px 
+            solid rgba(247, 147, 26, 0.3);
+            margin: 20px auto; /* Changez "margin: 20px 0;" en "margin: 20px auto;" */
+            max-width: 600px; /* Ajoutez cette ligne pour limiter la largeur */
+            display: block; /* Ajoutez cette ligne */
         }
 
         .progress-fill {
