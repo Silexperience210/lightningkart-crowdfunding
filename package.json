@@ -1,0 +1,30 @@
+{
+  "name": "lightningkart-webhook",
+  "version": "1.0.0",
+  "description": "Serveur webhook pour gérer les précommandes LightningKart",
+  "main": "webhook-server.js",
+  "scripts": {
+    "start": "node webhook-server.js",
+    "dev": "nodemon webhook-server.js"
+  },
+  "keywords": [
+    "lightning",
+    "bitcoin",
+    "webhook",
+    "lnbits",
+    "crowdfunding"
+  ],
+  "author": "LightningKart Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

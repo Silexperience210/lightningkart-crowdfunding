@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightningKart - Précommande</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a3e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .lightning-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(255, 153, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 3.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #f7931a 0%, #ff9500 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 153, 0, 0.3);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 153, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 153, 0, 0.8)); }
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: #a0a0ff;
+            margin-bottom: 10px;
+        }
+
+        .lightning-icon {
+            font-size: 2em;
+            color: #f7931a;
+            display: inline-block;
+            animation: bounce 1.5s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(255, 153, 0, 0.2) 100%);
+            border: 2px solid rgba(247, 147, 26, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(247, 147, 26, 0.2);
+        }
+
+        h2 {
+            color: #f7931a;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .product-card {
+            background: rgba(26, 26, 62, 0.6);
+            border: 2px solid rgba(247, 147, 26, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(247, 147, 26, 0.4);
+            border-color: #f7931a;
+        }
+
+        .price {
+            font-size: 2.5em;
+            color: #f7931a;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d0d0ff;
+        }
+
+        .features li:before {
+            content: "⚡ ";
+            color: #f7931a;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .form-section {
+            background: rgba(26, 26, 62, 0.6);
+            border: 2px solid rgba(124, 58, 237, 0.5);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a0a0ff;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(15, 15, 30, 0.8);
+            border: 2px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #f7931a;
+            box-shadow: 0 0 20px rgba(247, 147, 26, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #f7931a 0%, #ff9500 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(247, 147, 26, 0.4);
+            text-align: center;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(247, 147, 26, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .deadline {
+            text-align: center;
+            font-size: 1.2em;
+            color: #ff9500;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(247, 147, 26, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(247, 147, 26, 0.3);
+        }
+
+        .info-box {
+            background: rgba(124, 58, 237, 0.1);
+            border-left: 4px solid #7c3aed;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0a0ff;
+        }
+
+        .bitcoin-symbol {
+            color: #f7931a;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5em;
+            }
+            
+            .hero-section {
+                padding: 20px;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .progress-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background: rgba(15, 15, 30, 0.8);
+            border-radius: 50px;
+            height: 40px;
+            overflow: hidden;
+            border: 2px solid rgba(247, 147, 26, 0.3);
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f7931a 0%, #ff9500 100%);
+            width: 0%;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="lightning-bg"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">⚡ LightningKart</div>
+            <div class="tagline">L'expérience gaming sur Lightning Network</div>
+            <div class="lightning-icon">⚡</div>
+        </header>
+
+        <section class="hero-section">
+            <h2>Précommandez votre Console LightningKart</h2>
+            <p style="text-align: center; font-size: 1.2em; line-height: 1.8; margin: 20px 0;">
+                Soyez parmi les premiers à découvrir <strong>LightningKart</strong>, le jeu de course révolutionnaire 
+                propulsé par le <span class="bitcoin-symbol">Bitcoin</span> Lightning Network ! Précommandez dès maintenant 
+                votre pack complet et participez au développement futur du projet.
+            </p>
+
+            <div class="progress-section">
+                <h3 style="color: #a0a0ff; margin-bottom: 15px;">Objectif de financement</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar">0 / 10 consoles</div>
+                </div>
+                <p style="color: #d0d0ff; margin-top: 10px;">Chaque précommande contribue à hauteur de 150€ au développement du projet</p>
+            </div>
+        </section>
+
+        <div class="product-grid">
+            <div class="product-card">
+                <h3 style="color: #f7931a; text-align: center; margin-bottom: 20px;">Pack LightningKart Complet</h3>
+                <div class="price">600€</div>
+                <ul class="features">
+                    <li>Mini PC Ryzen 5 - 32GB RAM</li>
+                    <li>LightningKart préinstallé</li>
+                    <li>4 manettes incluses</li>
+                    <li>Wallet Lightning intégré</li>
+                    <li>Expérience Plug & Play</li>
+                    <li>Support et mises à jour</li>
+                    <li>Contribution au développement (150€)</li>
+                </ul>
+                <div class="info-box">
+                    <strong>⚡ Note :</strong> Votre achat finance directement le développement futur de LightningKart 
+                    et l'expansion de l'écosystème Bitcoin gaming !
+                </div>
+            </div>
+
+            <div class="product-card">
+                <h3 style="color: #7c3aed; text-align: center; margin-bottom: 20px;">Spécifications Techniques</h3>
+                <ul class="features">
+                    <li>Processeur AMD Ryzen 5</li>
+                    <li>32GB RAM DDR4</li>
+                    <li>SSD Ultra-rapide</li>
+                    <li>WiFi & Bluetooth intégrés</li>
+                    <li>Ports USB multiples</li>
+                    <li>HDMI pour écran externe</li>
+                    <li>Format compact et silencieux</li>
+                </ul>
+                <div class="info-box">
+                    <strong>🎮 Bonus :</strong> Prêt à jouer dès le déballage avec une configuration optimisée 
+                    pour les meilleures performances !
+                </div>
+            </div>
+        </div>
+
+        <div class="deadline">
+            <strong>📦 Livraison garantie avant le 31 janvier 2026</strong><br>
+            <span style="font-size: 0.9em;">Pour toutes les précommandes effectuées maintenant</span>
+        </div>
+
+        <section class="form-section">
+            <h2>Formulaire de Précommande</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #d0d0ff;">
+                Complétez vos informations ci-dessous pour finaliser votre précommande
+            </p>
+
+            <form id="preorderForm">
+                <div class="form-group">
+                    <label for="name">Nom / Pseudo *</label>
+                    <input type="text" id="name" name="name" required placeholder="Votre nom ou pseudo">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Adresse Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Adresse de Livraison *</label>
+                    <textarea id="address" name="address" rows="4" required placeholder="Votre adresse complète de livraison"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Téléphone (optionnel)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+33 6 12 34 56 78">
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Commentaires / Questions (optionnel)</label>
+                    <textarea id="comments" name="comments" rows="3" placeholder="Des questions ou commentaires ?"></textarea>
+                </div>
+
+                <div class="info-box" style="margin: 30px 0;">
+                    <strong>⚡ Paiement Lightning :</strong><br>
+                    Après avoir soumis ce formulaire, vous serez redirigé vers le paiement sécurisé via Lightning Network (LNURL-P). 
+                    Le montant de 600€ sera converti en satoshis au taux du moment.
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="btn">
+                        ⚡ Précommander - 600€
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section style="text-align: center; margin: 60px 0;">
+            <h2>Soutenez le Projet</h2>
+            <p style="font-size: 1.1em; color: #d0d0ff; margin: 20px 0;">
+                Vous ne souhaitez pas précommander mais voulez soutenir le développement de LightningKart ?<br>
+                Faites un don libre via Lightning Network !
+            </p>
+            <div class="button-container">
+                <a href="VOTRE_LIEN_TIPJAR" class="btn btn-secondary" target="_blank">
+                    💝 Faire un Don Lightning
+                </a>
+            </div>
+        </section>
+
+        <section class="hero-section">
+            <h2>Pourquoi LightningKart ?</h2>
+            <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                <div class="info-box">
+                    <h3 style="color: #f7931a; margin-bottom: 10px;">🎮 Gaming Révolutionnaire</h3>
+                    <p>Découvrez une nouvelle façon de jouer où vos gains sont instantanés grâce au Lightning Network. Gagnez des satoshis en jouant !</p>
+                </div>
+                <div class="info-box">
+                    <h3 style="color: #f7931a; margin-bottom: 10px;">⚡ Paiements Instantanés</h3>
+                    <p>Transactions ultra-rapides et frais minimes grâce à la technologie Lightning Network de Bitcoin.</p>
+                </div>
+                <div class="info-box">
+                    <h3 style="color: #f7931a; margin-bottom: 10px;">🚀 Développement Continu</h3>
+                    <p>Votre précommande finance directement le développement de nouvelles fonctionnalités, circuits et modes de jeu.</p>
+                </div>
+                <div class="info-box">
+                    <h3 style="color: #f7931a; margin-bottom: 10px;">🔒 Sécurité & Propriété</h3>
+                    <p>Vous possédez vraiment vos satoshis avec votre wallet Lightning intégré. Pas de plateforme intermédiaire.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p style="font-size: 1.1em; margin-bottom: 15px;">
+                <span class="bitcoin-symbol">₿</span> Propulsé par Bitcoin & Lightning Network <span class="lightning-icon">⚡</span>
+            </p>
+            <p style="color: #7c3aed;">
+                LightningKart - Le futur du gaming décentralisé
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                Pour toute question : <a href="mailto:contact@lightningkart.com" style="color: #f7931a;">contact@lightningkart.com</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuration - REMPLACEZ CES URLS PAR VOS VRAIES URLS
+        const LNBITS_LNURL_PAY_URL = 'VOTRE_URL_LNURL_PAY_LNBITS';
+        const WEBHOOK_URL = 'VOTRE_URL_WEBHOOK'; // Pour recevoir les données du formulaire
+
+        // Gestion du formulaire
+        document.getElementById('preorderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Récupération des données du formulaire
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                comments: document.getElementById('comments').value,
+                amount: 600,
+                timestamp: new Date().toISOString()
+            };
+
+            // Validation basique
+            if (!formData.name || !formData.email || !formData.address) {
+                alert('Veuillez remplir tous les champs obligatoires');
+                return;
+            }
+
+            // Sauvegarde locale temporaire
+            localStorage.setItem('lightningkart_preorder', JSON.stringify(formData));
+
+            // Affichage d'un message de confirmation
+            alert('Formulaire enregistré ! Vous allez être redirigé vers le paiement Lightning...');
+
+            // Instructions pour l'intégration avec LNbits
+            console.log('Données de précommande:', formData);
+            
+            // OPTION 1: Redirection vers une page de paiement LNbits avec les données
+            // window.location.href = LNBITS_LNURL_PAY_URL + '?amount=600&comment=' + encodeURIComponent(JSON.stringify(formData));
+            
+            // OPTION 2: Envoi des données à votre backend puis affichage du QR code
+            // Cette partie nécessite une intégration backend avec LNbits
+            
+            // Pour l'instant, affichage d'instructions
+            alert(`
+⚡ INSTRUCTIONS DE PAIEMENT ⚡
+
+1. Les données de votre précommande ont été enregistrées
+2. Vous allez maintenant effectuer le paiement de 600€ via Lightning Network
+3. Utilisez votre wallet Lightning pour scanner le QR code
+4. Une fois le paiement confirmé, vous recevrez un email de confirmation
+
+Pour configurer le paiement automatique, vous devez:
+- Configurer votre LNURL-Pay dans LNbits
+- Remplacer LNBITS_LNURL_PAY_URL dans le code
+- Optionnel: Configurer un webhook pour recevoir les notifications de paiement
+            `);
+
+            // Simuler la redirection (à remplacer par votre vraie URL)
+            // setTimeout(() => {
+            //     window.location.href = LNBITS_LNURL_PAY_URL;
+            // }, 2000);
+        });
+
+        // Animation de la barre de progression (simulation)
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                // Vous pouvez mettre à jour ce nombre dynamiquement
+                const soldConsoles = 0; // À récupérer depuis votre backend
+                const totalConsoles = 10;
+                const percentage = (soldConsoles / totalConsoles) * 100;
+                
+                document.getElementById('progressBar').style.width = percentage + '%';
+                document.getElementById('progressBar').textContent = soldConsoles + ' / ' + totalConsoles + ' consoles';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
